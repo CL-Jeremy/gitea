@@ -316,7 +316,7 @@ lint-backend: golangci-lint revive vet
 .PHONY: watch-frontend
 watch-frontend: node-check $(FOMANTIC_DEST) node_modules
 	rm -rf $(WEBPACK_DEST_ENTRIES)
-	NODE_ENV=development npx webpack --hide-modules --display-entrypoints=false --watch --progress
+	NODE_ENV=development npx webpack -r @swc/register --hide-modules --display-entrypoints=false --watch --progress
 
 .PHONY: watch-backend
 watch-backend: go-check
@@ -639,7 +639,7 @@ webpack: $(WEBPACK_DEST)
 
 $(WEBPACK_DEST): $(WEBPACK_SOURCES) $(WEBPACK_CONFIGS) package-lock.json | node_modules
 	rm -rf $(WEBPACK_DEST_ENTRIES)
-	npx webpack --hide-modules --display-entrypoints=false
+	npx webpack -r @swc/register --hide-modules --display-entrypoints=false
 	@touch $(WEBPACK_DEST)
 
 .PHONY: svg
