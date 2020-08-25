@@ -6,6 +6,7 @@ import './publicpath.js';
 import Vue from 'vue';
 import {htmlEscape} from 'escape-goat';
 import 'jquery.are-you-sure';
+import emojiSupport from './vendor/detect-emoji-support.js';
 import './vendor/semanticdropdown.js';
 
 import initMigration from './features/migration.js';
@@ -24,6 +25,7 @@ import initTableSort from './features/tablesort.js';
 import ActivityTopAuthors from './components/ActivityTopAuthors.vue';
 import {initNotificationsTable, initNotificationCount} from './features/notification.js';
 import {createCodeEditor} from './features/codeeditor.js';
+import {twemojiInnerHTML} from './features/emoji.js';
 import {svg, svgs} from './svg.js';
 
 const {AppSubUrl, StaticUrlPrefix, csrf} = window.config;
@@ -33,6 +35,17 @@ const commentMDEditors = {};
 
 // Silence fomantic's error logging when tabs are used without a target content element
 $.fn.tab.settings.silent = true;
+
+function renderTwemoji(htmlData, classSelector) {
+  if (emojiSupport()) return htmlData;
+  return $.parseHTML(htmlData).map((n) => {
+    if (n.nodeName === '#text') return n.textContent;
+    $(classSelector, n).each((_, e) => {
+      if (e.textContent) e.innerHTML = twemojiInnerHTML(e.textContent);
+    });
+    return n.outerHTML;
+  }).join('');
+}
 
 function initCommentPreviewTab($form) {
   const $tabMenu = $form.find('.tabular.menu');
@@ -46,6 +59,7 @@ function initCommentPreviewTab($form) {
       text: $form.find(`.tab[data-tab="${$tabMenu.data('write')}"] textarea`).val()
     }, (data) => {
       const $previewPanel = $form.find(`.tab[data-tab="${$tabMenu.data('preview')}"]`);
+      data = renderTwemoji(data, '.emoji');
       $previewPanel.html(data);
       renderMarkdownContent();
     });
@@ -76,6 +90,7 @@ function initEditPreviewTab($form) {
         text: $form.find(`.tab[data-tab="${$tabMenu.data('write')}"] textarea`).val()
       }, (data) => {
         const $previewPanel = $form.find(`.tab[data-tab="${$tabMenu.data('preview')}"]`);
+        data = renderTwemoji(data, '.emoji');
         $previewPanel.html(data);
         renderMarkdownContent();
       });
@@ -248,6 +263,7 @@ function initReactionSelector(parent) {
           } else {
             react.appendTo(content);
           }
+          resp.html = renderTwemoji(resp.html, '.reaction');
           react.html(resp.html);
           react.find('.dropdown').dropdown();
           initReactionSelector(react);
@@ -998,6 +1014,7 @@ async function initRepository() {
             if (data.length === 0) {
               $renderContent.html($('#no-content').html());
             } else {
+              data.content = renderTwemoji(data.content, '.emoji');
               $renderContent.html(data.content);
             }
             const $content = $segment.parent();
@@ -1336,6 +1353,7 @@ function initWikiForm() {
               text: plainText,
               wiki: true
             }, (data) => {
+              data = renderTwemoji(data, '.emoji');
               preview.innerHTML = `<div class="markdown ui segment">${data}</div>`;
               renderMarkdownContent();
             });

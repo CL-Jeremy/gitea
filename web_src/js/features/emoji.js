@@ -1,4 +1,5 @@
 import emojis from '../../../assets/emoji.json';
+import emojiSupport from '../vendor/detect-emoji-support.js';
 
 const {StaticUrlPrefix} = window.config;
 
@@ -25,6 +26,8 @@ export function emojiHTML(name) {
   let inner;
   if (name === 'gitea') {
     inner = `<img alt=":${name}:" src="${StaticUrlPrefix}/img/emoji/gitea.png">`;
+  } else if (!emojiSupport() && emojiMap[name]) {
+    inner = twemojiInnerHTML(emojiMap[name]);
   } else {
     inner = emojiString(name);
   }
@@ -34,5 +37,31 @@ export function emojiHTML(name) {
 
 // retrieve string for given emoji name
 export function emojiString(name) {
-  return emojiMap[name] || `:${name}:`;
+  if (!emojiMap[name] || !emojiSupport()) return `:${name}:`;
+  return emojiMap[name];
 }
+
+export function twemojiInnerHTML(emojiString) {
+  const twemoji = Array.from(emojiString)
+    .map((c) => c.codePointAt(0).toString(16))
+    .join('-')
+    .replace(/^(.{4})-.*/, '$1')
+    .replace(/^(.{2})-fe0f(.*)/, '$1$2');
+
+  return `<img alt="${emojiString}" src="https://twemoji.maxcdn.com/v/latest/svg/${twemoji}.svg">`;
+}
+
+function replaceOnReady() {
+  if (emojiSupport()) return;
+  document.querySelectorAll('.emoji, .reaction').forEach((e) => {
+    if (e.textContent) e.innerHTML = twemojiInnerHTML(e.textContent);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.fonts) {
+    document.fonts.ready.then(replaceOnReady);
+  } else {
+    replaceOnReady();
+  }
+});

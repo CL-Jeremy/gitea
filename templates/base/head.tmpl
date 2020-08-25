@@ -46,7 +46,7 @@
 			},
 			PageIsProjects: {{if .PageIsProjects }}true{{else}}false{{end}},
       {{if .RequireTribute}}
-			tributeValues: Array.from(new Map([
+			tributeValues: [
 				{{ range .Participants }}
 				['{{.Name}}', {key: '{{.Name}} {{.FullName}}', value: '{{.Name}}',
 				name: '{{.Name}}', fullname: '{{.FullName}}', avatar: '{{.RelAvatarLink}}'}],
@@ -55,7 +55,12 @@
 				['{{.Name}}', {key: '{{.Name}} {{.FullName}}', value: '{{.Name}}',
 				name: '{{.Name}}', fullname: '{{.FullName}}', avatar: '{{.RelAvatarLink}}'}],
 				{{ end }}
-			]).values()),
+			].reduce(function (a1, a2) {
+				var set = a1[0].has ? a1[0] : new Set();
+				if (!set.size) { set.add(a1[0]); a1[0] = set; a1[1] = [a1[1]]; }
+				if (!set.has(a2[0])) { set.add(a2[0]); a1[1].concat(a2[1]); }
+				return a1;
+			})[1],
 			{{end}}
 		};
 	</script>

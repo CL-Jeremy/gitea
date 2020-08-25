@@ -34,11 +34,11 @@ const filterCssImport = (url, ...args) => {
 
   if (cssFile.includes('fomantic')) {
     if (/brand-icons/.test(importedFile)) return false;
-    if (/(eot|ttf|otf|woff|svg)$/.test(importedFile)) return false;
+    if (/(eot|ttf|otf|svg)$/.test(importedFile)) return false;
   }
 
   if (cssFile.includes('font-awesome')) {
-    if (/(eot|ttf|otf|woff|svg)$/.test(importedFile)) return false;
+    if (/(eot|ttf|otf|svg)$/.test(importedFile)) return false;
   }
 
   return true;
@@ -48,6 +48,7 @@ module.exports = {
   mode: isProduction ? 'production' : 'development',
   entry: {
     index: [
+      resolve(__dirname, 'node_modules/current-script-polyfill/currentScript.js'),
       resolve(__dirname, 'web_src/js/jquery.js'),
       resolve(__dirname, 'web_src/fomantic/build/semantic.js'),
       resolve(__dirname, 'web_src/js/index.js'),
@@ -161,6 +162,37 @@ module.exports = {
               generatorOpts: {
                 compact: false,
               },
+            },
+          },
+        ],
+      },
+      {
+        test: /node_modules\/.*\.js$/,
+        exclude: /node_modules\/(?!vue\/dist|escape-goat)/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+              cacheCompression: false,
+              cacheIdentifier: [
+                resolve(__dirname, 'package.json'),
+                resolve(__dirname, 'package-lock.json'),
+                resolve(__dirname, 'webpack.config.js'),
+              ].map((path) => statSync(path).mtime.getTime()).join(':'),
+              sourceMaps: true,
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    useBuiltIns: 'usage',
+                    corejs: 3,
+                  },
+                ],
+              ],
+              plugins: [
+                '@babel/plugin-transform-modules-commonjs',
+              ],
             },
           },
         ],
