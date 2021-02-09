@@ -411,8 +411,16 @@ code,
   }
 
   &.button,
+  &.basic.button,
   &.menu .item {
     user-select: auto;
+    font-weight: normal;
+
+    &.green,
+    &.red,
+    &.active:not(.dropdown) {
+      font-weight: 500;
+    }
   }
 
   &.container {
@@ -420,12 +428,6 @@ code,
       &.padded {
         padding: 0 10px;
       }
-    }
-  }
-
-  &.form {
-    .ui.button {
-      font-weight: normal;
     }
   }
 
