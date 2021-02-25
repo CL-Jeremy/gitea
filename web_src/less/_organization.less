@@ -1,21 +1,4 @@
 .organization {
-  .head {
-    .ui.header {
-      .text {
-        vertical-align: middle;
-        font-size: 1.6rem;
-        margin-left: 15px;
-      }
-      .org-visibility .label {
-        margin-left: 5px;
-        margin-top: 5px;
-      }
-      .ui.right {
-        margin-top: 5px;
-      }
-    }
-  }
-
   &.new.org {
     #create-page-form();
 
@@ -33,7 +16,15 @@
     }
   }
 
-  &.profile {
+  .header-wrapper {
+    background-color: var(--color-navbar);
+    padding-bottom: 15px;
+  }
+
+  .org-header {
+    display: flex;
+    align-items: flex-start;
+
     .org-avatar {
       width: 100px;
       height: 100px;
@@ -41,20 +32,19 @@
     }
 
     #org-info {
-      overflow-wrap: anywhere;
+      align-self: center;
+      flex-grow: 1;
+      word-wrap: break-word;
 
       .ui.header {
-        font-size: 36px;
-        margin-bottom: 0;
-        .org-visibility .label {
-          margin-left: 5px;
-          margin-top: 2px;
-        }
+        font-size: 24px;
+        line-height: 40px;
+        margin-bottom: .5rem;
       }
 
       .desc {
         font-size: 16px;
-        margin-bottom: 10px;
+        margin-bottom: 16px;
       }
 
       .meta {
@@ -68,17 +58,11 @@
         }
       }
     }
+  }
 
-    .ui.top.header {
-      .ui.right {
-        margin-top: 0;
-      }
-    }
-
-    .teams {
-      .item {
-        padding: 10px 15px;
-      }
+  .teams {
+    .item {
+      padding: 10px 15px;
     }
   }
 
