@@ -1,33 +1,36 @@
 {{with .Org}}
 	<div class="header-wrapper">
 		<div class="ui container">
-			<div class="org-header fw">
-				{{avatar . 100 "org-avatar"}}
-				<div id="org-info">
-					<div class="ui header">
+			<div class="org-header fw sb">
+				<div class="org-info-wrap df ab">
+					{{avatar . 100 "org-avatar"}}
+					<div id="org-info">
+						<div class="ui header">
+							{{if $.PageIsUserProfile}}{{.DisplayName}}{{else}}<a href="{{.HomeLink}}">{{.DisplayName}}</a>{{end}}
+							{{- /* begin blocked block */ -}}
+							{{- if (or $.PageIsUserProfile (or $.PageIsOrgMembers $.PageIsOrgTeams)) -}}
+								<div class="labels dif fw ac vm ml-3">
+									{{template "org/visibility_label" dict "root" $ "org" . "size" "large"}}
+									{{if $.IsOrganizationOwner}}
+										<a class="ui compact small basic icon button poping up ml-2" href="{{$.OrgLink}}/settings" data-content="{{$.i18n.Tr "org.settings"}}" data-position="right center" data-variation="small">
+											{{svg "octicon-tools"}}
+										</a>
+									{{end}}
+								</div>
+							{{- else -}}
+							{{- /* end blocked block */ -}}
+								<div class="text grey thin di mx-2">/</div><span class="text grey thin dib mr-2">{{$.i18n.Tr "org.settings"}}</span>
+							{{end}}
+						</div>
 						{{if $.PageIsUserProfile}}
-							{{.DisplayName}}
-							<div class="labels dif fw ac vm">
-								{{template "org/visibility_label" dict "root" $ "org" . "size" "large"}}
-								{{if $.IsOrganizationOwner}}
-									<a class="ui compact small basic icon button poping up ml-2" href="{{$.OrgLink}}/settings" data-content="{{$.i18n.Tr "org.settings"}}" data-position="right center" data-variation="small">
-										{{svg "octicon-tools"}}
-									</a>
-								{{end}}
+							{{if $.RenderedDescription}}<div class="render-content markdown desc">{{$.RenderedDescription|Str2html}}</div>{{end}}
+							<div class="text grey meta">
+								{{if .Location}}<div class="item">{{svg "octicon-location"}} <span>{{.Location}}</span></div>{{end}}
+								{{if .Website}}<div class="item word-break">{{svg "octicon-link"}} <a target="_blank" rel="noopener noreferrer" href="{{.Website}}">{{.Website}}</a></div>{{end}}
 							</div>
-						{{else}}
-							<a href="{{.HomeLink}}">{{.DisplayName}}</a><div class="di mx-2">/</div><span class="text thin dib mr-2">{{$.i18n.Tr "org.settings"}}</span>
 						{{end}}
 					</div>
-					{{if $.PageIsUserProfile}}
-						{{if $.RenderedDescription}}<div class="render-content markdown desc">{{$.RenderedDescription|Str2html}}</div>{{end}}
-						<div class="text grey meta">
-							{{if .Location}}<div class="item">{{svg "octicon-location"}} <span>{{.Location}}</span></div>{{end}}
-							{{if .Website}}<div class="item">{{svg "octicon-link"}} <a target="_blank" rel="noopener noreferrer" href="{{.Website}}">{{.Website}}</a></div>{{end}}
-						</div>
-					{{end}}
 				</div>
-
 				{{if not $.PageIsUserProfile}}
 					<div class="ui menu">
 						<a class="{{if $.PageIsOrgMembers}}active{{end}} item" href="{{$.OrgLink}}/members">

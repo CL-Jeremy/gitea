@@ -1,22 +1,20 @@
 <h4 class="ui top attached header">
-		{{.i18n.Tr "repo.issues.label_count" .NumLabels}}
-		<div class="ui right">
-			<div class="ui right floated secondary filter menu">
-				<!-- Sort -->
-				<div class="ui dropdown type jump item">
-					<span class="text">
-						{{.i18n.Tr "repo.issues.filter_sort"}}
-						{{svg "octicon-triangle-down" 14 "dropdown icon"}}
-					</span>
-					<div class="menu">
-						<a class="{{if or (eq .SortType "alphabetically") (not .SortType)}}active{{end}} item" href="{{$.Link}}?sort=alphabetically&state={{$.State}}">{{.i18n.Tr "repo.issues.label.filter_sort.alphabetically"}}</a>
-						<a class="{{if eq .SortType "reversealphabetically"}}active{{end}} item" href="{{$.Link}}?sort=reversealphabetically&state={{$.State}}">{{.i18n.Tr "repo.issues.label.filter_sort.reverse_alphabetically"}}</a>
-						<a class="{{if eq .SortType "leastissues"}}active{{end}} item" href="{{$.Link}}?sort=leastissues&state={{$.State}}">{{.i18n.Tr "repo.milestones.filter_sort.least_issues"}}</a>
-						<a class="{{if eq .SortType "mostissues"}}active{{end}} item" href="{{$.Link}}?sort=mostissues&state={{$.State}}">{{.i18n.Tr "repo.milestones.filter_sort.most_issues"}}</a>
-					</div>
-				</div>
+	{{.i18n.Tr "repo.issues.label_count" .NumLabels}}
+	<div class="ui right floated secondary filter menu">
+		<!-- Sort -->
+		<div class="ui dropdown right aligned type jump item">
+			<span class="text">
+				{{.i18n.Tr "repo.issues.filter_sort"}}
+				{{svg "octicon-triangle-down" 14 "dropdown icon"}}
+			</span>
+			<div class="menu">
+				<a class="{{if or (eq .SortType "alphabetically") (not .SortType)}}active{{end}} item" href="{{$.Link}}?sort=alphabetically&state={{$.State}}">{{.i18n.Tr "repo.issues.label.filter_sort.alphabetically"}}</a>
+				<a class="{{if eq .SortType "reversealphabetically"}}active{{end}} item" href="{{$.Link}}?sort=reversealphabetically&state={{$.State}}">{{.i18n.Tr "repo.issues.label.filter_sort.reverse_alphabetically"}}</a>
+				<a class="{{if eq .SortType "leastissues"}}active{{end}} item" href="{{$.Link}}?sort=leastissues&state={{$.State}}">{{.i18n.Tr "repo.milestones.filter_sort.least_issues"}}</a>
+				<a class="{{if eq .SortType "mostissues"}}active{{end}} item" href="{{$.Link}}?sort=mostissues&state={{$.State}}">{{.i18n.Tr "repo.milestones.filter_sort.most_issues"}}</a>
 			</div>
-		</div> <!-- filter menu -->
+		</div>
+	</div> <!-- filter menu -->
 </h4>
 
 <div class="ui attached segment">

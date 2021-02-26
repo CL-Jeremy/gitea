@@ -16,9 +16,19 @@
     }
   }
 
+  .menu.new-menu.navbar {
+    margin-top: -30px !important;
+  }
+
   .header-wrapper {
     background-color: var(--color-navbar);
     padding-bottom: 15px;
+  }
+
+  @media @mediaMdAndUp {
+    .org-info-wrap {
+      flex: 1;
+    }
   }
 
   .org-header {
@@ -34,22 +44,29 @@
     #org-info {
       align-self: center;
       flex-grow: 1;
-      word-wrap: break-word;
+      word-break: break-word;
+      min-width: 0;
 
       .ui.header {
         font-size: 24px;
         line-height: 40px;
         margin-bottom: .5rem;
+        margin-right: .5rem;
       }
 
       .desc {
-        font-size: 16px;
-        margin-bottom: 16px;
+        margin-bottom: 10px;
+
+        > p {
+          font-size: 16px;
+          line-height: 26px;
+        }
       }
 
       .meta {
         .item {
           display: inline-block;
+          line-height: 26px;
           margin-right: 10px;
 
           .icon {
@@ -57,6 +74,10 @@
           }
         }
       }
+    }
+
+    .ui.menu {
+      white-space: nowrap;
     }
   }
 
