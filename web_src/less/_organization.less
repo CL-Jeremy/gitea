@@ -17,7 +17,7 @@
   }
 
   .menu.new-menu.navbar {
-    margin-top: -30px !important;
+    margin-top: -25px !important;
   }
 
   .header-wrapper {
@@ -35,10 +35,23 @@
     display: flex;
     align-items: flex-start;
 
-    .org-avatar {
+    img.org-avatar {
       width: 100px;
       height: 100px;
       margin-right: 15px;
+    }
+    
+    svg.org-avatar {
+      flex-shrink: 0;
+      margin-right: 7px;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      color: var(--color-text-light);
+      
+      & + #org-info {
+        margin-top: 20px;
+        align-self: auto;
+      }
     }
 
     #org-info {
@@ -49,7 +62,7 @@
 
       .ui.header {
         font-size: 24px;
-        line-height: 40px;
+        line-height: 2.5rem;
         margin-bottom: .5rem;
         margin-right: .5rem;
       }
@@ -58,15 +71,13 @@
         margin-bottom: 10px;
 
         > p {
-          font-size: 16px;
-          line-height: 26px;
+          font-size: 14px;
         }
       }
 
       .meta {
         .item {
           display: inline-block;
-          line-height: 26px;
           margin-right: 10px;
 
           .icon {
@@ -78,8 +89,8 @@
 
     .ui.menu {
       white-space: nowrap;
-      margin-top: 1.5rem;
-      margin-bottom: 1rem;
+      margin-top: 13px;
+      margin-bottom: 13px;
     }
   }
 

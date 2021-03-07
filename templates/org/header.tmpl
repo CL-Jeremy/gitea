@@ -3,38 +3,72 @@
 		<div class="ui container">
 			<div class="org-header fw sb">
 				<div class="org-info-wrap df ab">
-					{{avatar . 100 "org-avatar"}}
+					{{if $.PageIsUserProfile}}
+						{{avatar . 100 "org-avatar"}}
+					{{else if $.PageIsOrgMembers}}
+						{{svg "octicon-person" 40 "org-avatar"}}
+					{{else if $.PageIsOrgTeams}}
+						{{svg "octicon-people" 40 "org-avatar"}}
+					{{else}}
+						{{svg "octicon-tools" 40 "org-avatar"}}
+					{{end}}
 					<div id="org-info">
-						<div class="ui header">
-							{{if $.PageIsUserProfile}}{{.DisplayName}}{{else}}<a href="{{.HomeLink}}">{{.DisplayName}}</a>{{end}}
-							{{- /* begin blocked block */ -}}
-							{{- if (or $.PageIsUserProfile (or $.PageIsOrgMembers $.PageIsOrgTeams)) -}}
-								<div class="labels dif fw ac vm ml-3">
-									{{template "org/visibility_label" dict "root" $ "org" . "size" "large"}}
-									{{if $.IsOrganizationOwner}}
-										<a class="ui compact small basic icon button poping up ml-2" href="{{$.OrgLink}}/settings" data-content="{{$.i18n.Tr "org.settings"}}" data-position="right center" data-variation="small">
-											{{svg "octicon-tools"}}
-										</a>
-									{{end}}
-								</div>
-							{{- else -}}
-							{{- /* end blocked block */ -}}
-								<div class="text grey thin di mx-2">/</div><span class="text grey thin dib mr-2">{{$.i18n.Tr "org.settings"}}</span>
-							{{end}}
-						</div>
 						{{if $.PageIsUserProfile}}
+							<div class="ui header">
+								{{.DisplayName}}
+								{{- /* begin blocked block */ -}}
+									<div class="labels dif fw ac vm ml-3">
+										{{template "org/visibility_label" dict "root" $ "org" . "size" "large"}}
+										{{if $.IsOrganizationOwner}}
+											<a class="ui compact tiny basic icon button poping up ml-2" href="{{$.OrgLink}}/settings" data-content="{{$.i18n.Tr "org.settings"}}" data-position="right center" data-variation="small">
+												{{svg "octicon-tools"}}
+											</a>
+										{{end}}
+									</div>
+								{{- /* end blocked block */ -}}
+							</div>
 							{{if $.RenderedDescription}}<div class="render-content markdown desc">{{$.RenderedDescription|Str2html}}</div>{{end}}
 							<div class="text grey meta">
 								{{if .Location}}<div class="item">{{svg "octicon-location"}} <span>{{.Location}}</span></div>{{end}}
 								{{if .Website}}<div class="item word-break">{{svg "octicon-link"}} <a target="_blank" rel="noopener noreferrer" href="{{.Website}}">{{.Website}}</a></div>{{end}}
 							</div>
+						{{else}}
+							<div class="ui header">
+								<a href="{{.HomeLink}}">{{.DisplayName}}</a><div class="text grey thin di mx-2">/</div>
+								{{- /* begin inline block */ -}}
+									{{- if $.PageIsOrgMembers -}}
+										<span class="text grey thin dib mr-2">{{$.i18n.Tr "org.people"}}</span>
+									{{- else if (or $.team_name (or $.PageIsOrgTeamsNew (or $.PageIsOrgTeamMembers $.PageIsOrgTeamRepos))) -}}
+										<a class="text thin" href="{{$.OrgLink}}/teams">{{$.i18n.Tr "org.teams"}}</a><div class="text grey thin di mx-2">/</div>
+										{{- if $.team_name -}}
+											<a class="text thin" href="{{$.OrgLink}}/teams/{{$.team_name}}">{{$.Team.Name}}</a><div class="text grey thin di mx-2">/</div>
+										{{- end -}}
+										<span class="text grey thin dib mr-2">
+											{{- if $.team_name -}}
+												{{$.i18n.Tr "org.teams.settings"}}
+											{{- else if $.PageIsOrgTeamsNew -}}
+												{{$.i18n.Tr "org.create_new_team"}}
+											{{- else if (or $.PageIsOrgTeamMembers $.PageIsOrgTeamRepos) -}}
+												{{$.Team.Name}}
+											{{- end -}}
+										</span>
+									{{- else if $.PageIsOrgTeams -}}
+										<span class="text grey thin dib mr-2">{{$.i18n.Tr "org.teams"}}</span>
+									{{- else -}}
+										<span class="text grey thin dib mr-2">{{$.i18n.Tr "org.settings"}}</span>
+									{{- end -}}
+								{{- /* end inline block */ -}}
+							</div>
 						{{end}}
 					</div>
 				</div>
-				{{if not $.PageIsUserProfile}}
+				{{if not (or $.PageIsUserProfile (or $.team_name (or $.PageIsOrgTeamsNew (or $.PageIsOrgTeamMembers $.PageIsOrgTeamRepos))))}}
 					<div class="ui menu">
+						<a class="{{if not (or $.PageIsOrgMembers $.PageIsOrgTeams)}}active{{end}} item" href="{{$.OrgLink}}/settings">
+							{{svg "octicon-tools"}}&nbsp;{{$.i18n.Tr "org.settings"}}
+						</a>
 						<a class="{{if $.PageIsOrgMembers}}active{{end}} item" href="{{$.OrgLink}}/members">
-							{{svg "octicon-organization"}}&nbsp;{{$.i18n.Tr "org.people"}}
+							{{svg "octicon-person"}}&nbsp;{{$.i18n.Tr "org.people"}}
 							<div class="floating ui black label">{{.NumMembers}}</div>
 						</a>
 						<a class="{{if $.PageIsOrgTeams}}active{{end}} item" href="{{$.OrgLink}}/teams">
