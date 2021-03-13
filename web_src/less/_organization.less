@@ -40,14 +40,14 @@
       height: 100px;
       margin-right: 15px;
     }
-    
+
     svg.org-avatar {
       flex-shrink: 0;
       margin-right: 7px;
       margin-top: 15px;
       margin-bottom: 15px;
       color: var(--color-text-light);
-      
+
       & + #org-info {
         margin-top: 20px;
         align-self: auto;
@@ -72,13 +72,20 @@
 
         > p {
           font-size: 14px;
+          line-height: 1.5rem;
         }
       }
 
       .meta {
+        line-height: 1.5rem;
+
         .item {
           display: inline-block;
           margin-right: 10px;
+
+          &:not(:last-child) {
+            margin-bottom: 10px;
+          }
 
           .icon {
             margin-right: 5px;
