@@ -57,9 +57,20 @@
 
 			<form class="ui form" action="{{.Link}}/avatar" method="post" enctype="multipart/form-data">
 				{{.CsrfTokenHtml}}
-				<div class="inline field">
-					<label for="avatar">{{.i18n.Tr "settings.choose_new_avatar"}}</label>
-					<input name="avatar" type="file" >
+				{{$avatar := (repoAvatar .Repository 28 "mr-5")}}
+				<div class="df fw ac">
+					<div class="inline field mb-4">
+						<label>{{.i18n.Tr "settings.avatar"}}</label>
+						{{if $avatar}}
+							{{$avatar}}
+						{{else}}
+							<div class="ui basic label repo-icon none mr-5">{{svg "octicon-circle-slash" 16}}</div>
+						{{end}}
+					</div>
+					<div class="inline field mb-4">
+						<label for="avatar">{{.i18n.Tr "settings.choose_new_avatar"}}</label>
+						<input name="avatar" type="file" >
+					</div>
 				</div>
 
 				<div class="field">
@@ -328,6 +339,18 @@
 							<div class="ui checkbox">
 								<input name="pulls_allow_squash" type="checkbox" {{if or (not $pullRequestEnabled) ($prUnit.PullRequestsConfig.AllowSquash)}}checked{{end}}>
 								<label>{{.i18n.Tr "repo.settings.pulls.allow_squash_commits"}}</label>
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui checkbox">
+								<input name="pulls_allow_manual_merge" type="checkbox" {{if or (not $pullRequestEnabled) ($prUnit.PullRequestsConfig.AllowManualMerge)}}checked{{end}}>
+								<label>{{.i18n.Tr "repo.settings.pulls.allow_manual_merge"}}</label>
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui checkbox">
+								<input name="enable_autodetect_manual_merge" type="checkbox" {{if or (not $pullRequestEnabled) ($prUnit.PullRequestsConfig.AutodetectManualMerge)}}checked{{end}}>
+								<label>{{.i18n.Tr "repo.settings.pulls.enable_autodetect_manual_merge"}}</label>
 							</div>
 						</div>
 					</div>

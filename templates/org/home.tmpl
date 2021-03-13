@@ -21,7 +21,7 @@
 			</div>
 
 			<div class="ui five wide column">
-				<h4 class="ui top attached header df ac">
+				<h4 class="ui top attached header df">
 					<strong class="f1">{{.i18n.Tr "org.people"}}</strong>
 					{{if .IsOrganizationMember}}
 						<a class="text grey df ac" href="{{.OrgLink}}/members"><span class="mr-2">{{.Org.NumMembers}}</span>{{svg "octicon-chevron-right"}}</a>
@@ -39,7 +39,7 @@
 				</div>
 
 				{{if .IsOrganizationMember}}
-					<div class="ui top attached header df ac">
+					<div class="ui top attached header df">
 						<strong class="f1">{{.i18n.Tr "org.teams"}}</strong>
 						<a class="text grey df ac" href="{{.OrgLink}}/teams"><span class="mr-2">{{.Org.NumTeams}}</span>{{svg "octicon-chevron-right"}}</a>
 					</div>
