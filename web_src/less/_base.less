@@ -288,9 +288,12 @@ a.muted:hover,
 .ui.menu .item > .label {
   background: var(--color-grey);
 
+  &:not(.circular) {
+    padding: .3em .5em;
+  }
+
   &:not(.floating) {
     margin-left: 7px;
-    padding: .3em .5em;
   }
 }
 
@@ -2033,6 +2036,7 @@ table th[data-sortt-desc] {
 
 .truncated-item-container {
   display: flex !important;
+  align-items: center;
 }
 
 .truncated-item-name {

@@ -1,13 +1,9 @@
 {{template "base/head" .}}
 <div class="page-content organization settings webhooks">
 	{{template "org/header" .}}
+	{{template "org/settings/navbar" .}}
 	<div class="ui container">
-		<div class="ui grid">
-			{{template "org/settings/navbar" .}}
-			<div class="twelve wide column content">
-				{{template "repo/settings/webhook/list" .}}
-			</div>
-		</div>
+		{{template "repo/settings/webhook/list" .}}
 	</div>
 </div>
 {{template "base/footer" .}}

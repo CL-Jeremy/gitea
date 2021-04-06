@@ -1,6 +1,7 @@
 {{template "base/head" .}}
 <div class="page-content organization teams">
 	{{template "org/header" .}}
+	<div class="ui divider mt-0"></div>
 	<div class="ui container">
 		{{template "base/alert" .}}
 		{{if .IsOrganizationOwner}}
@@ -10,7 +11,7 @@
 			<div class="ui divider"></div>
 		{{end}}
 
-		<div class="ui two column grid">
+		<div class="ui two column stackable grid">
 			{{range .Teams}}
 				<div class="column">
 					<div class="ui top attached header">

@@ -1,0 +1,11 @@
+{{with .org}}
+	{{if not .Visibility.IsPublic}}
+		<div class="ui {{if $.size}}{{$.size}} {{end}}basic horizontal label">
+			{{if .Visibility.IsLimited}}
+				{{$.root.i18n.Tr "org.settings.visibility.limited_shortname"}}
+			{{else if .Visibility.IsPrivate}}
+				{{$.root.i18n.Tr "org.settings.visibility.private_shortname"}}
+			{{end}}
+		</div>
+	{{end}}
+{{end}}
